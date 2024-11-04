@@ -1,44 +1,32 @@
-#importing libraries
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import random
 
-#import and load dataset
 mnist=tf.keras.datasets.mnist
 (x_train,y_train),(x_test,y_test)=mnist.load_data()
-#normalize training images by dividing each pixel with 255, so that they'll rescale from 0 to 1 
+
 x_train=x_train/255
 x_test=x_test/255
 
-#sequential to make layers
+
 model=keras.Sequential([
-    keras.layers.Flatten(input_shape=(28,28)), #flatten: multidimentional array to 1D => reshaping as 28*28 = 784
-    keras.layers.Dense(128,activation="relu"), #dense layer takes only 1D input, fully connected with 128 neurons, relu gives output to only +x as x othherwise 0
-    keras.layers.Dense(10,activation="softmax") #output layer, softmax converts op to probabilities that from which class the input is belonging
+    keras.layers.Flatten(input_shape=(28,28)), 
+    keras.layers.Dense(128,activation="relu"), 
+    keras.layers.Dense(10,activation="softmax") 
 ])
 
 model.summary()
 
-#Model training process
-#SGD stochastic gradient descent: used to adjust weights during training to minimize the loss
-#Sparse_categorical_crossentropy: for multiclass classification problem where labels are integers
-#accuracy metrics tracks accuracy during training and evaluation to measure model performance
 model.compile(optimizer="sgd",loss="sparse_categorical_crossentropy",metrics=["accuracy"])
 
-#x_train, y_train training data
-#epochs are 10, means 10 training cycles allowing model to learn and adjust weights with each pass
-#validation uses test data, after each epoch the model performance is evaluated on this data which helps in better performance
 history=model.fit(x_train,y_train,epochs=10,validation_data=(x_test,y_test))
 
-#calculates test loss and accuracy
-#displaying it using % as format specifier, .3 means till 3 decimals and f for floating value
 test_loss,test_acc=model.evaluate(x_test,y_test)
 print("Loss = %.3f" %test_loss)
 print("Accuracy = %.3f" %test_acc)
 
-#using random function so that every time we can get another image ti predict
-n = random.randint(0, 9999)
+n = random.randint(0, 9)
 plt.imshow(x_test[n])
 plt.show()
 predicted_value = model.predict(x_test)
