@@ -1,2 +1,2 @@
 # DL
-Here are all the Deep Learning practicals for BE-IT Sem 7
+Here are all Deep Learning practicals for BE-IT Sem 7
